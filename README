@@ -1,0 +1,15 @@
+.ll := LLVM assembly
+.bc := LLVM bitcode
+.s := native assembly
+
+llvm-g++ -emit-llvm -S main.cpp -o main.ll
+llvm-as main.ll -o main.bc
+
+llvm-g++ -emit-llvm -S add.cpp -o add.ll
+llvm-as add.ll -o add.bc
+
+llvm-link add.bc main.bc -o one.bc
+
+opt -std-compile-opts -std-link-opts one.bc -o one.opt.bc
+
+llvm-ld one.opt.bc -o one
