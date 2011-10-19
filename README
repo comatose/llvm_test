@@ -13,3 +13,13 @@ llvm-link add.bc main.bc -o one.bc
 opt -std-compile-opts -std-link-opts one.bc -o one.opt.bc
 
 llvm-ld one.opt.bc -o one
+
+# gcc staging
+
+g++ -S main.cpp -o main.s
+as main.s -o main.o
+
+g++ -S add.cpp -o add.s
+as add.s -o add.o
+
+g++ main.o add.o -o one
