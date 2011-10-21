@@ -2,20 +2,22 @@
 .bc := LLVM bitcode
 .s := native assembly
 
-llvm-g++ -emit-llvm -S main.cpp -o main.ll
+# LLVM IR generation
+clang++ -emit-llvm -S main.cpp -o main.ll
+clang++ -emit-llvm -S add.cpp -o add.ll
+
+# LLVM bitcode generation
+llvm-as add.ll -o add.bc
 llvm-as main.ll -o main.bc
 
-llvm-g++ -emit-llvm -S add.cpp -o add.ll
-llvm-as add.ll -o add.bc
+# Executable generation
+llvm-link add.bc main.bc -o one
 
-llvm-link add.bc main.bc -o one.bc
+# Optimization
+opt -std-compile-opts -std-link-opts one -o one.opt
 
-opt -std-compile-opts -std-link-opts one.bc -o one.opt.bc
-
-llvm-ld one.opt.bc -o one
 
 # gcc staging
-
 g++ -S main.cpp -o main.s
 as main.s -o main.o
 
