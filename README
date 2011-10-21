@@ -13,7 +13,7 @@ llvm-as main.ll -o main.bc
 # Executable generation
 llvm-link add.bc main.bc -o one
 
-# Optimization
+# Executable Optimization
 opt -std-compile-opts -std-link-opts one -o one.opt
 
 
