@@ -3,19 +3,22 @@
 .s := native assembly
 
 # LLVM IR generation
+# LLVM bitcode generation
+# bitcode unification
+# bitcode optimization
+# Executable generation
+
 clang++ -emit-llvm -S main.cpp -o main.ll
 clang++ -emit-llvm -S add.cpp -o add.ll
 
-# LLVM bitcode generation
 llvm-as add.ll -o add.bc
 llvm-as main.ll -o main.bc
 
-# Executable generation
-llvm-link add.bc main.bc -o one
+llvm-link add.bc main.bc -o one.bc
 
-# Executable Optimization
-opt -std-compile-opts -std-link-opts one -o one.opt
+opt -std-compile-opts -std-link-opts one.bc -o one.opt.bc
 
+llvm-ld -native -L/usr/lib/gcc/i686-linux-gnu/4.6.1 -lstdc++ one.opt.bc -o one 
 
 # gcc staging
 g++ -S main.cpp -o main.s
